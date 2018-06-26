@@ -37,7 +37,9 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
     public async run(msg, { type }) {
         const storage: Storage = this.client.shared.get('storage')
         const guilds: any[] = await storage.guildsFocus.findAll({
-            order: [ 'kills' ],
+            order: [
+                [ 'kills', 'DESC' ]
+            ],
             limit: 25
         })
 
