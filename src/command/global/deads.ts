@@ -18,7 +18,8 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
         super(client, {
             group: 'global',
             name: 'deads',
-            description: null
+            description: null,
+            channelIds: client.shared.get('config').parameters.limitToChannels
         })
     }
 
@@ -34,9 +35,6 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
     }
 
     public async run(msg, { type }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-            
         const storage: Storage = this.client.shared.get('storage')
         const guilds: any[] = await storage.guildsFocus.findAll({
             order: [ 'kills' ],

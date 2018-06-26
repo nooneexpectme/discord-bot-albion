@@ -10,6 +10,7 @@ module.exports = class UserJobCommand extends CommandBase {
             group: 'user',
             name: 'job',
             description: 'Change votre métier et tier',
+            channelIds: client.shared.get('config').parameters.limitToChannels,
             args: [
                 { name: 'jobName', type: String },
                 { name: 'tier', type: Number }
@@ -18,9 +19,6 @@ module.exports = class UserJobCommand extends CommandBase {
     }
 
     public async run(msg: Message, { jobName, tier }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-
         const storage: Storage = this.client.shared.get('storage')
 
         // 1. Check if the job exists

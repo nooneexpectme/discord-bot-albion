@@ -11,7 +11,7 @@ module.exports = class adminUpdateConfigCommand extends CommandBase {
             group: 'admin',
             name: 'update-config',
             description: 'Met à jour la configuration du bot',
-            ownerOnly: true
+            userIds: client.settings.ownerIds
         });
     }
 

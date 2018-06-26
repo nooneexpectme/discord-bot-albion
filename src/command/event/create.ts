@@ -16,7 +16,7 @@ module.exports = class EventCreateCommand extends CommandBase {
             group: 'events',
             name: 'event-create',
             description: 'Créer un nouvel événement',
-            aliases: [ 'eventcreate' ],
+            userIds: client.settings.ownerIds,
             args: [
                 {
                     name: 'date',

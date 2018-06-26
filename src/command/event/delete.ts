@@ -12,6 +12,7 @@ module.exports = class EventDeleteCommand extends CommandBase {
             group: 'events',
             name: 'event-delete',
             description: 'Supprime un événement',
+            userIds: client.settings.ownerIds,
             args: [
                 { name: 'ref', type: String }
             ]

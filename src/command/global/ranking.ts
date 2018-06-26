@@ -13,6 +13,7 @@ module.exports = class GlobalRankingCommand extends CommandBase {
             group: 'global',
             name: 'ranking',
             description: 'Retourne le classement des joueurs ayant le plus de points.',
+            channelIds: client.shared.get('config').parameters.limitToChannels,
             args: [
                 { name: 'type', type: String, isOptional: true }
             ]
@@ -20,9 +21,6 @@ module.exports = class GlobalRankingCommand extends CommandBase {
     }
 
     public async run(msg, { type }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-            
         // Base informations
         const { ranking } = this.client.shared.get('config').parameters
         const rankingType = ranking.types[type] || ranking.types['week']
