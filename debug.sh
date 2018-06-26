@@ -1,0 +1,1 @@
+clear && DEBUG=qd:*, node dist
