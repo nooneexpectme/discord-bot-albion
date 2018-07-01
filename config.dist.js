@@ -7,7 +7,7 @@ const moment = require('moment')
 
 // Client settings
 module.exports.client = {
-    ownerId: null,
+    ownerIds: null,
     prefix: '!',
     token: null,
     throwErrorChannel: true,
