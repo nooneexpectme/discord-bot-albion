@@ -27,7 +27,7 @@ module.exports = class AdminGiveCommand extends CommandBase {
     public async run(msg, { user, points, resources }) {
         const storage: Storage = this.client.shared.get('storage')
         const create: any = await storage.donation.create({
-            amount: resources || 0,
+            amount: resources,
             points,
             tier: 0,
             resourceId: null,
