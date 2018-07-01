@@ -34,7 +34,7 @@ export class Storage {
         // Associations
         this.need.belongsTo(this.resource)
         this.resource.belongsTo(this.job)
-        this.donation.belongsTo(this.resource)
+        this.donation.belongsTo(this.resource, { foreignKey: { allowNull: true } })
         this.donation.belongsTo(this.user)
         this.user.belongsTo(this.job)
     }

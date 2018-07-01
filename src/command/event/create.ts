@@ -16,7 +16,8 @@ module.exports = class EventCreateCommand extends CommandBase {
             group: 'events',
             name: 'event-create',
             description: 'Créer un nouvel événement',
-            aliases: [ 'eventcreate' ],
+            userIds: client.settings.ownerIds,
+            channelIds: client.shared.get('config').parameters.limitToChannels,
             args: [
                 {
                     name: 'date',
@@ -47,9 +48,6 @@ module.exports = class EventCreateCommand extends CommandBase {
     }
 
     public async run(msg: Message, { date, name, description }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-            
         const storage: Storage = this.client.shared.get('storage')
 
         // 1. Create unique ref and register event in database
@@ -83,7 +81,7 @@ module.exports = class EventCreateCommand extends CommandBase {
 
         for (const deadlineDate of deadlineDates) {
             const timeout = setTimeout(() => {
-                this.sendEventAlert(event.channelId, event.messageId)
+                this.sendEventAlert(eventCreate.notifChannelId || event.channelId, event.messageId)
                     .catch(console.error)
             }, deadlineDate.diff(actualDate))
             this.timeouts.push(timeout)

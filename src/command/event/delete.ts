@@ -12,6 +12,8 @@ module.exports = class EventDeleteCommand extends CommandBase {
             group: 'events',
             name: 'event-delete',
             description: 'Supprime un événement',
+            userIds: client.settings.ownerIds,
+            channelIds: client.shared.get('config').parameters.limitToChannels,
             args: [
                 { name: 'ref', type: String }
             ]
@@ -19,9 +21,6 @@ module.exports = class EventDeleteCommand extends CommandBase {
     }
 
     public async run(msg: Message, { ref }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-            
         const storage: Storage = this.client.shared.get('storage')
 
         // 1. Check if the event exists

@@ -17,6 +17,7 @@ module.exports = class UserStatsCommand extends CommandBase {
             group: 'user',
             name: 'stats',
             description: 'Affiche vos statistiques',
+            channelIds: client.shared.get('config').parameters.limitToChannels,
             args: [
                 { name: 'user', type: UserType, validator: UserValidator, isOptional: true }
             ]
@@ -24,9 +25,6 @@ module.exports = class UserStatsCommand extends CommandBase {
     }
 
     public async run(msg: Message, { user }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-
         // Base informations
         const { ranking, stats } = this.client.shared.get('config').parameters
         const startOfWeekTimestamp = ranking.types.week.unix()

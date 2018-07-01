@@ -22,14 +22,12 @@ module.exports = class AdminRatesCommand extends CommandBase {
         super(client, {
             group: 'global',
             name: 'rates',
-            description: 'Renvois la liste des ratios des ressources dont on a besoin'
+            description: 'Renvois la liste des ratios des ressources dont on a besoin',
+            channelIds: client.shared.get('config').parameters.limitToChannels
         });
     }
 
     public async run(msg) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-
         const storage: Storage = this.client.shared.get('storage')
         const { registerLoot } = this.client.shared.get('config').parameters
 
@@ -56,7 +54,9 @@ module.exports = class AdminRatesCommand extends CommandBase {
             else result.push(title + ' | ' + rates.join(' - '))
         }
 
-        result.push(null, `Les ressources ${noRates.join(', ')} ont actuellement un ratio au minimum.`)
+        if (noRates.length === needs.length) result[1] = '```Toutes les ressources ont actuellement un ratio au minimum.```'
+        else result.push(null, `Les ressources ${noRates.join(', ')} ont actuellement un ratio au minimum.`)
+        
         return msg.channel.send(result)
     }
 }

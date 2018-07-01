@@ -35,7 +35,7 @@ module.exports = class AdminRegisterLootCommand extends CommandBase {
                 { name: 'tier', type: Number },
                 { name: 'amount', type: Number }
             ],
-            ownerOnly: true
+            userIds: client.settings.ownerIds
         });
     }
 

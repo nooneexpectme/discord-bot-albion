@@ -9,8 +9,11 @@ Première version stable en ligne le `26/06/18` utilisant le micro framework [@t
 - **register-loot** `<player>` `<resource>` `<amount>`
 [Admin uniquement] Ajoutera au joueur un nombre de point en fonction du **nombre** de **ressource** qu'il a donné mutliplié par le _rate_.
 
-- **update-config**
+- **reload-config**
 [Admin uniquement] Prend en compte les mises à jour de votre fichier de configuration.
+
+- **give**
+[Admin uniquement] Donne des points et ressources à un joueur dans ses stats.
 
 - **event-create** `<name>` `<date>` `<description>`
 Créer un évenement et lui attribut une référence automatiquement.
