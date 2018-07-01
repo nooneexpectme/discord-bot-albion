@@ -3,13 +3,13 @@ import { Client, CommandBase } from '@tanuki/discord-bot-base'
 import { join } from 'path'
 
 // Command
-module.exports = class adminUpdateConfigCommand extends CommandBase {
+module.exports = class AdminReloadConfigCommand extends CommandBase {
     public client: Client
 
     constructor(client: Client) {
         super(client, {
             group: 'admin',
-            name: 'update-config',
+            name: 'reload-config',
             description: 'Met à jour la configuration du bot',
             userIds: client.settings.ownerIds
         });

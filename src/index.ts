@@ -29,7 +29,6 @@ client.dispatcher
         client.registry.command.registerDefaults(),
         ...config.commands.map(command => client.registry.command.register(require.resolve('./command/' + command)))
     ])
-    client.registry.command.get('eval').settings.ownerOnly = false
     // await storage.regenDefaultTables()
 })()
 .then(() => console.log('Application finished'))

@@ -54,7 +54,9 @@ module.exports = class AdminRatesCommand extends CommandBase {
             else result.push(title + ' | ' + rates.join(' - '))
         }
 
-        result.push(null, `Les ressources ${noRates.join(', ')} ont actuellement un ratio au minimum.`)
+        if (noRates.length === needs.length) result[1] = '```Toutes les ressources ont actuellement un ratio au minimum.```'
+        else result.push(null, `Les ressources ${noRates.join(', ')} ont actuellement un ratio au minimum.`)
+        
         return msg.channel.send(result)
     }
 }
