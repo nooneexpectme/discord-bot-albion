@@ -17,6 +17,7 @@ module.exports = class EventCreateCommand extends CommandBase {
             name: 'event-create',
             description: 'Créer un nouvel événement',
             userIds: client.settings.ownerIds,
+            channelIds: client.shared.get('config').parameters.limitToChannels,
             args: [
                 {
                     name: 'date',
@@ -47,9 +48,6 @@ module.exports = class EventCreateCommand extends CommandBase {
     }
 
     public async run(msg: Message, { date, name, description }) {
-        if (!this.client.shared.get('config').parameters.limitToChannels.includes(msg.channel.id))
-            return
-            
         const storage: Storage = this.client.shared.get('storage')
 
         // 1. Create unique ref and register event in database

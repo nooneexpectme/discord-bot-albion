@@ -16,7 +16,7 @@ module.exports.client = {
 
 // Command list
 module.exports.commands = [
-    'admin/update-config',
+    'admin/reload-config',
     'admin/register-loot',
     'event/create',
     'event/delete',
@@ -29,7 +29,7 @@ module.exports.commands = [
 
 // Commands parameters
 module.exports.parameters = {
-    limitToChannels: [  ],
+    limitToChannels: [ null ],
     registerLoot: {
         minRate: 0.5
     },
@@ -39,7 +39,8 @@ module.exports.parameters = {
             60 * 60 * 2, // 2h
             60 * 30, // 30min
             60 * 10 // 10min
-        ]
+        ],
+        notifChannelId: null
     },
     ranking: {
         display: 10,
