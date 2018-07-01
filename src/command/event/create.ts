@@ -81,7 +81,7 @@ module.exports = class EventCreateCommand extends CommandBase {
 
         for (const deadlineDate of deadlineDates) {
             const timeout = setTimeout(() => {
-                this.sendEventAlert(event.channelId, event.messageId)
+                this.sendEventAlert(eventCreate.notifChannelId || event.channelId, event.messageId)
                     .catch(console.error)
             }, deadlineDate.diff(actualDate))
             this.timeouts.push(timeout)
