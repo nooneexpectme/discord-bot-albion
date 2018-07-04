@@ -48,7 +48,7 @@ module.exports = class AdminRatesCommand extends CommandBase {
                 const tier = TIER_TO_STRING[tierIndex]
                 const rate = Math.max(registerLoot.minRate, (need[tier] / Math.max(1, needsTotal)) * parseInt(tierIndex))
                 if (rate > registerLoot.minRate)
-                    rates.push(`T${tierIndex} \`${rate.toFixed(2)}\` (${need[tier]})`)
+                    rates.push(`T${tierIndex} \`${rate.toFixed(2)}\``)
             }
             if (rates.length === 0) noRates.push(title)
             else result.push(title + ' | ' + rates.join(' - '))
