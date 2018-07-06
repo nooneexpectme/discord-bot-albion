@@ -81,7 +81,7 @@ module.exports = class EventCreateCommand extends CommandBase {
 
         for (const deadlineDate of deadlineDates) {
             const timeout = setTimeout(() => {
-                this.sendEventAlert(eventCreate.notifChannelId || event.channelId, event.messageId)
+                this.sendEventAlert(event.channelId, event.messageId)
                     .catch(console.error)
             }, deadlineDate.diff(actualDate))
             this.timeouts.push(timeout)
@@ -103,6 +103,11 @@ module.exports = class EventCreateCommand extends CommandBase {
     }
 
     private async sendEventAlert(channelId: string, messageId: string): Promise<Message|Message[]> {
+        // Get destination channel
+        const { eventCreate } = this.client.shared.get('config').parameters
+        const destinationChannel: TextChannel = <TextChannel> (<DJSClient> this.client.discord).channels.get(eventCreate.notifChannelId)
+        if (!destinationChannel) return
+
         // Retrieve the original message
         const channel: TextChannel = <TextChannel> (<DJSClient> this.client.discord).channels.get(channelId)
         if (!channel) return
@@ -118,7 +123,7 @@ module.exports = class EventCreateCommand extends CommandBase {
         users.forEach(list => usersToPrevent.push(...list.map(user => user.id)))
 
         // Prevent users
-        return channel.send([
+        return destinationChannel.send([
             'Un événement auquel vous avez réagis va bientôt débuter.',
             messageUrl,
             usersToPrevent.map(userId => `<@${userId}>`).join(', ')
