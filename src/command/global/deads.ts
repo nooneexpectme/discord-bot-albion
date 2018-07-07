@@ -19,7 +19,7 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
         super(client, {
             group: 'global',
             name: 'deads',
-            description: null,
+            description: 'Affiche une liste des guildes qui nous focus',
             channelIds: client.shared.get('config').parameters.limitToChannels
         })
     }
