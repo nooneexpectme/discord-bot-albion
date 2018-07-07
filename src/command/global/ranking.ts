@@ -1,7 +1,7 @@
 // Imports
 import { CommandBase, Client } from '@tanuki/discord-bot-base'
 import { Storage } from '../../storage'
-import { Op, fn, col } from 'sequelize'
+import { Op, fn, col, literalStatic } from 'sequelize'
 import { User } from 'discord.js'
 
 // GlobalRankingCommand
@@ -31,7 +31,7 @@ module.exports = class GlobalRankingCommand extends CommandBase {
             attributes: [ 'userId', [ fn('SUM', col('points')), 'totalPoints' ] ],
             where: { timestamp: { [Op.gt]: rankingType.unix() } },
             group: [ 'userId' ],
-            limit: ranking.display
+            limit: ranking.display,
         })
 
         // Retrieve discord user ids
@@ -51,7 +51,8 @@ module.exports = class GlobalRankingCommand extends CommandBase {
         const response = []
         response.push(`:trophy: **Classement des ${ranking.display} plus gros contributeurs ${rankingType.text}** :trophy:`, null)
         
-        for (const donationIndex in donations) {
+        // TODO: Why order attribute in donations query does not work ?
+        for (const donationIndex in donations.sort((a, b) => b.dataValues.totalPoints - a.dataValues.totalPoints)) {
             const donation = donations[donationIndex]
             const user = botIdToDiscordUser[donation.userId]
 
