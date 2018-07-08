@@ -13,23 +13,26 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
     public client: Client
     public interval: number = null
     public lastRefresh: moment.Moment = moment()
+    public alreadyAdded: number[] = []
     
     constructor(client: Client) {
         super(client, {
             group: 'global',
             name: 'deads',
-            description: null,
+            description: 'Affiche une liste des guildes qui nous focus',
             channelIds: client.shared.get('config').parameters.limitToChannels
         })
     }
 
     public async load(): Promise<void> {
+        this.alreadyAdded = this.client.shared.get('deadsAlreadyAdded') || []
         const { deads } = this.client.shared.get('config').parameters
         await this.refreshGameDeaths()
         this.interval = setInterval(() => this.refreshGameDeaths(), deads.requestInterval)
     }
 
     public async unload(): Promise<void> {
+        this.client.shared.set('deadsAlreadyAdded', this.alreadyAdded)
         clearInterval(this.interval)
         this.interval = null
     }
@@ -42,7 +45,7 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
             ],
             limit: 25
         })
-
+        this.lastRefresh.isUtc()
         const embed = new RichEmbed()
             .setColor('#D48F3C')
             .setTimestamp()
@@ -66,7 +69,8 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
 
         for (const kill of kills) {
             const victimGuild = String(kill.Victim.GuildName).toLowerCase().trim()
-            if (victimGuild === ourGuild && kill.Type === 'KILL') {
+            if (victimGuild === ourGuild && kill.Type === 'KILL' && !this.alreadyAdded.includes(kill.EventId)) {
+                this.alreadyAdded.push(kill.EventId)
                 const killerGuild = String(kill.Killer.GuildName)
                 if (!guilds[killerGuild]) {
                     const allianceName = String(kill.Killer.AllianceName)
@@ -77,7 +81,7 @@ module.exports = class GlobalDeadsCommand extends CommandBase {
         }
 
         const storage: Storage = this.client.shared.get('storage')
-        this.lastRefresh = moment()
+        this.lastRefresh = moment().utcOffset(120)
         return Promise.all(Object.keys(guilds).map(async (guildName) => {
             const guild: any = guilds[guildName]
             const [ guildFocus, isCreated ]: [ any, boolean ] = await storage.guildsFocus.findOrCreate({
