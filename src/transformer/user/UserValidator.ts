@@ -1,6 +1,6 @@
 // Method
-export default async function UserValidator(arg: any) {
+export default function UserValidator(arg: any) {
     return !arg
-        ? [ false,  `The user is not registered in the the database.` ]
+        ? [ false,  `L'utilisateur n'est pas enregistré dans la base de données.` ]
         : [ true, null ]
 }

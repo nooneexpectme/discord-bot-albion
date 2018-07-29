@@ -14,5 +14,9 @@ export const structure = {
     tierMax: {
         type: SMALLINT,
         allowNull: false
+    },
+    roleId: {
+        type: STRING,
+        allowNull: true
     }
 }
