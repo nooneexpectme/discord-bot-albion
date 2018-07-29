@@ -1,6 +1,6 @@
 // Validator
 export default function ResourceValidator(arg: any) {
     return !arg
-        ? [ false, 'Resource not found' ]
+        ? [ false, 'La ressource n\'éxiste pas.' ]
         : [ true, null ]
 }

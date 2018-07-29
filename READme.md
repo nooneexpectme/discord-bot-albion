@@ -15,6 +15,9 @@ Première version stable en ligne le `26/06/18` utilisant le micro framework [@t
 - **give**
 [Admin uniquement] Donne des points et ressources à un joueur dans ses stats.
 
+- **bind-job-role**
+[Admin uniquement] Lie un rôle à un métier, lorsque l'utilisateur utilisera la commande `job` il lui sera attribué ce rôle automatiquement.
+
 - **event-create** `<name>` `<date>` `<description>`
 Créer un évenement et lui attribut une référence automatiquement.
 

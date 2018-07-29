@@ -16,6 +16,7 @@ module.exports.client = {
 
 // Command list
 module.exports.commands = [
+    'admin/bind-job-role',
     'admin/give',
     'admin/reload-config',
     'admin/register-loot',
