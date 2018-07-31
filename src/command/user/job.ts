@@ -1,6 +1,7 @@
 import { Client, CommandBase } from '@tanuki/discord-bot-base'
 import { Message } from 'discord.js'
 import { Storage } from '../../storage'
+import { Op } from 'sequelize'
 
 import JobType from '../../transformer/job/JobType'
 import JobValidator from '../../transformer/job/JobValidator'
@@ -36,7 +37,16 @@ module.exports = class UserJobCommand extends CommandBase {
         })
         if (!isCreated) (<any> user).update({ jobId: job.id, tier })
 
-        // 3. Update username and role of the user and reply
+        // 3. Check if the user haven't an other job's role (and remove him)
+        const userRoleIds = msg.member.roles.keyArray().filter(roleId => roleId != job.roleId)
+        const oldJobs: any[] = await storage.job.findAll({
+            attributes: [ 'roleId' ],
+            where: { roleId: { [Op.or]: userRoleIds } }
+        })
+        const oldRoleIds = oldJobs.map(oldJob => oldJob.roleId)
+        const updateRoles = msg.member.removeRoles(oldRoleIds)
+
+        // 4. Update username and role of the user and reply
         const updateUsername = msg.member
             .setNickname(`${msg.author.username} [${tier}]`)
             .catch(() => msg.reply('impossible de modifier votre pseudonyme.'))
@@ -48,7 +58,8 @@ module.exports = class UserJobCommand extends CommandBase {
         await Promise.all([
             updateUsername,
             updateRole,
-            msg.reply('votre status a été mis à jour.')
+            updateRoles,
+            msg.react('✅')
         ])
     }
 }
